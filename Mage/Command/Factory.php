@@ -10,7 +10,6 @@
 
 namespace Mage\Command;
 
-use Mage\Command\AbstractCommand;
 use Mage\Config;
 use Mage\Autoload;
 
@@ -41,6 +40,7 @@ class Factory
         $className = 'Mage\\Command\\BuiltIn\\' . $commandName . 'Command';
         if (Autoload::isLoadable($className)) {
             $instance = new $className;
+            assert($instance instanceOf AbstractCommand);
             $instance->setConfig($config);
         } else {
             throw new Exception('Command not found.');

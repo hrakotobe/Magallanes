@@ -10,7 +10,6 @@
 
 namespace Mage;
 
-use Mage\Config;
 use Mage\Command\Factory;
 use Mage\Command\RequiresEnvironment;
 use Mage\Console\Colors;
@@ -27,7 +26,7 @@ class Console
 {
 	/**
 	 * Handler to the current Log File.
-	 * @var handler
+	 * @var mixed
 	 */
     private static $log = null;
 
@@ -57,7 +56,7 @@ class Console
 
     /**
      * Configuration
-     * @var Mage/Config
+     * @var \Mage\Config
      */
     private static $config;
 

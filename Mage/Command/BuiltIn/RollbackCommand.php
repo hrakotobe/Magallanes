@@ -16,24 +16,24 @@ use Mage\Task\Factory;
 use Mage\Console;
 
 /**
- * Command for Managing the Releases
+ * This is an Alias of "release rollback"
  *
  * @author Andrés Montañez <andres@andresmontanez.com>
  */
-class ReleasesCommand extends AbstractCommand implements RequiresEnvironment
+class RollbackCommand extends AbstractCommand implements RequiresEnvironment
 {
     /**
-     * List the Releases, Rollback to a Release
+     * Rollback a release
      * @see \Mage\Command\AbstractCommand::run()
      */
     public function run()
     {
-        if (!is_numeric($this->getConfig()->getParameter('release', ''))) {
+        $releaseId = $this->getConfig()->getArgument(1);
+        if (!is_numeric($releaseId)) {
             Console::output('<red>This release is mandatory.</red>', 1, 2);
             return false;
         }
 
-        $subcommand = $this->getConfig()->getArgument(1);
         $lockFile = '.mage/' . $this->getConfig()->getEnvironment() . '.lock';
         if (file_exists($lockFile) && ($subcommand == 'rollback')) {
             Console::output('<red>This environment is locked!</red>', 1, 2);
@@ -50,21 +50,10 @@ class ReleasesCommand extends AbstractCommand implements RequiresEnvironment
             foreach ($hosts as $host) {
                 $this->getConfig()->setHost($host);
 
-                switch ($subcommand) {
-                    case 'list':
-                        $task = Factory::get('releases/list', $this->getConfig());
-                        $task->init();
-                        $result = $task->run();
-                        break;
-
-                    case 'rollback':
-                        $releaseId = $this->getConfig()->getParameter('release', '');
-                        $task = Factory::get('releases/rollback', $this->getConfig());
-                        $task->init();
-                        $task->setRelease($releaseId);
-                        $result = $task->run();
-                        break;
-                }
+                $task = Factory::get('releases/rollback', $this->getConfig());
+                $task->init();
+                $task->setRelease($releaseId);
+                $result = $task->run();
             }
         }
 

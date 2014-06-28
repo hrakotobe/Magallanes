@@ -10,7 +10,7 @@
 
 namespace Mage;
 
-use Symfony\Component\Yaml\Yaml;
+use Mage\Yaml\Yaml;
 use Exception;
 
 /**
@@ -100,7 +100,7 @@ class Config
     protected function loadGeneral()
     {
     	if (file_exists('.mage/config/general.yml')) {
-    		$this->config['general'] = spyc_load_file('.mage/config/general.yml');
+    		$this->config['general'] = Yaml::parse(file_get_contents('.mage/config/general.yml'));
     	}
     }
 
@@ -114,7 +114,7 @@ class Config
     {
     	$environment = $this->getEnvironment();
     	if (($environment != false) && file_exists('.mage/config/environment/' . $environment . '.yml')) {
-    		$this->config['environment'] = spyc_load_file('.mage/config/environment/' . $environment . '.yml');
+    		$this->config['environment'] = Yaml::parse(file_get_contents('.mage/config/environment/' . $environment . '.yml'));
 
     		// Create temporal directory for clone
     		if (isset($this->config['environment']['deployment']['source']) && is_array($this->config['environment']['deployment']['source'])) {
@@ -256,9 +256,8 @@ class Config
 
         if (isset($config[$configStage])) {
             $tasksData = ($config[$configStage] ? (array) $config[$configStage] : array());
-            foreach ($tasksData as $taskName => $taskData) {
+            foreach ($tasksData as $taskData) {
                 if (is_array($taskData)) {
-                    ;
                     $tasks[] = array(
                         'name' => key($taskData),
                         'parameters' => current($taskData),

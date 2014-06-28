@@ -12,8 +12,6 @@ namespace Mage\Task;
 
 use Mage\Config;
 use Mage\Autoload;
-use Mage\Task\ErrorWithMessageException;
-use Mage\Task\AbstractTask;
 
 use Exception;
 
@@ -28,10 +26,12 @@ class Factory
      * Gets an instance of a Task.
      *
      * @param string|array $taskData
-     * @param Mage\Config $taskConfig
+     * @param \Mage\Config $taskConfig
+     * @param Config $taskConfig
      * @param boolean $inRollback
      * @param string $stage
      * @return \Mage\Task\AbstractTask
+     * @throws \Exception|\Mage\Task\ErrorWithMessageException
      */
     public static function get($taskData, Config $taskConfig, $inRollback = false, $stage = null)
     {

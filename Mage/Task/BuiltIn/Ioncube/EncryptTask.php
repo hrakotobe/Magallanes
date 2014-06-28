@@ -316,12 +316,13 @@ class EncryptTask extends AbstractTask
 	 * Switch our current source dir to the ioncube srouce dir and create new empty dir to encrypt into
 	 * Write the IonCube project file (this is the file that controls IonCube encoder)
 	 * Run IonCube encoder
-	 * Delete the tempory files that we created (so long as we hadn't set 'keeptemp')
+	 * Delete the temporary files that we created (so long as we hadn't set 'keeptemp')
 	 * Return the result of the IonCube encoder
 	 *
 	 * @see \Mage\Task\AbstractTask::run()
 	 *
 	 * @return bool
+     * @throws \Mage\Task\ErrorWithMessageException
 	 */
 	public function run() {
 		$this->switchSrcToTmp ();
@@ -591,7 +592,6 @@ class EncryptTask extends AbstractTask
 	 * @return bool
 	 */
 	private function switchSrcToTmp() {
-		//echo "\nSwitching :" . $this->source . " -> To :" . $this->ionSource."\n";
 		$ret = Console::executeCommand ( 'mv ' . $this->source . ' ' . $this->ionSource, $out );
 		if (! $ret) {
 			throw new ErrorWithMessageException ( 'Cant create tmp dir :' . $out, $ret );

@@ -1,13 +1,11 @@
 <?php
-namespace Mage\Task\BuiltIn\Filesysten;
+namespace Mage\Task\BuiltIn\Filesystem;
 
-use Exception;
 use Mage\Task\AbstractTask;
-use Mage\Task\ErrorWithMessageException;
 use Mage\Task\SkipException;
 use Mage\Task\Releases\IsReleaseAware;
 
-class ApplyFacls extends AbstractTask implements IsReleaseAware
+class ApplyFaclsTask extends AbstractTask implements IsReleaseAware
 {
     /**
      * Returns the Title of the Task
@@ -22,8 +20,6 @@ class ApplyFacls extends AbstractTask implements IsReleaseAware
      * Runs the task
      *
      * @return boolean
-     * @throws Exception
-     * @throws ErrorWithMessageException
      * @throws SkipException
      */
     public function run()

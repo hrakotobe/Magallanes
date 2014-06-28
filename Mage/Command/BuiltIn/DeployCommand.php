@@ -310,7 +310,11 @@ class DeployCommand extends AbstractCommand implements RequiresEnvironment
     			    case 'targz':
     			    	$deployStrategy = 'deployment/strategy/tar-gz';
     			    	break;
-
+                            
+                            case 'git-rebase':
+    			    	$deployStrategy = 'deployment/strategy/git-rebase';
+    			    	break;
+                            
     			    case 'guess':
     			    default:
     			    	if ($this->getConfig()->release('enabled', false) == true) {
@@ -449,10 +453,9 @@ class DeployCommand extends AbstractCommand implements RequiresEnvironment
 
         $runTask = true;
         if (($task instanceOf SkipOnOverride) && $this->getConfig()->getParameter('overrideRelease', false)) {
-            $runTask == false;
+            $runTask = false;
         }
 
-        $result = false;
         if ($runTask == true) {
             try {
                 $result = $task->run();
@@ -516,6 +519,7 @@ class DeployCommand extends AbstractCommand implements RequiresEnvironment
     /**
      * Send Email Notification if enabled
      * @param boolean $result
+     * @return boolean
      */
     protected function sendNotification($result)
     {
@@ -534,6 +538,8 @@ class DeployCommand extends AbstractCommand implements RequiresEnvironment
                ->setLogFile(Console::getLogFile())
                ->setEnvironment($this->getConfig()->getEnvironment())
                ->send($result);
+
+        return true;
     }
 
 }
